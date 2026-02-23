@@ -42,8 +42,31 @@ jobs:
         run: npm run --if-present lint
 
       - name: Test
-        run: npm run --if-present test -- --watch=false --browsers=ChromeHeadless
+        env:
+          CI: true
+        run: |
+          TEST_SCRIPT=$(node -e "const p=require('./package.json'); process.stdout.write((p.scripts&&p.scripts.test)||'')")
+          if [ -z "$TEST_SCRIPT" ]; then
+            echo "No test script found. Skipping."
+            exit 0
+          fi
+
+          if echo "$TEST_SCRIPT" | grep -q "ng test"; then
+            npm run test -- --watch=false --browsers=ChromeHeadless
+          else
+            npm run test
+          fi
 
       - name: Build
-        run: npm run --if-present build -- --configuration=production
+        run: |
+          BUILD_SCRIPT=$(node -e "const p=require('./package.json'); process.stdout.write((p.scripts&&p.scripts.build)||'')")
+          if [ -z "$BUILD_SCRIPT" ]; then
+            echo "No build script found. Skipping."
+            exit 0
+          fi
 
+          if echo "$BUILD_SCRIPT" | grep -q "ng build"; then
+            npm run build -- --configuration=production
+          else
+            npm run build
+          fi
