@@ -3,6 +3,12 @@
   "installCommand": "cd wagnerGiraud && npm ci",
   "buildCommand": "cd wagnerGiraud && npm run build",
   "outputDirectory": "wagnerGiraud/dist/wagner-giraud",
+  "git": {
+    "deploymentEnabled": {
+      "*": false,
+      "main": true
+    }
+  },
   "rewrites": [
     {
       "source": "/(.*)",
