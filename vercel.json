@@ -1,0 +1,12 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "installCommand": "cd wagnerGiraud && npm ci",
+  "buildCommand": "cd wagnerGiraud && npm run build",
+  "outputDirectory": "wagnerGiraud/dist/wagner-giraud",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
