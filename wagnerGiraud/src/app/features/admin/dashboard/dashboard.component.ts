@@ -63,8 +63,7 @@ export class DashboardComponent {
   private createForm(content: PortfolioContent): DashboardForm {
     return new FormGroup({
       heroTitle: new FormControl(content.heroTitle, {
-        nonNullable: true,
-        validators: [Validators.required]
+        nonNullable: true
       }),
       heroDescription: new FormControl(content.heroDescription, {
         nonNullable: true,
