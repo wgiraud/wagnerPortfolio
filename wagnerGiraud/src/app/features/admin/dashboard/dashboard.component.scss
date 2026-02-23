@@ -1,0 +1,187 @@
+:host {
+  --surface: #050505;
+  --panel: rgba(14, 14, 14, 0.95);
+  --panel-border: rgba(219, 255, 45, 0.25);
+  --neon: #dbff2d;
+  --text: #f1f4e2;
+  --muted: #adb096;
+  display: block;
+}
+
+.dashboard-page {
+  min-height: 100dvh;
+  padding: 1.2rem;
+  color: var(--text);
+  font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(219, 255, 45, 0.14), transparent 35%),
+    linear-gradient(145deg, #050505, #111111 60%, #090909);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  margin: 0;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 0.86rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.55rem;
+}
+
+.ghost-btn {
+  background: transparent;
+  border: 0;
+  color: rgba(239, 255, 125, 0.92);
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 0.12rem;
+}
+
+.layout {
+  margin-top: 1.6rem;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 1rem;
+}
+
+.editor,
+.preview {
+  border: 1px solid var(--panel-border);
+  border-radius: 0.95rem;
+  background: var(--panel);
+  padding: 1rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.hint {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.83rem;
+}
+
+form {
+  margin-top: 0.9rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+}
+
+input,
+textarea {
+  border: 1px solid rgba(219, 255, 45, 0.24);
+  border-radius: 0.55rem;
+  background: rgba(7, 7, 7, 0.95);
+  color: var(--text);
+  padding: 0.6rem 0.7rem;
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--neon);
+  box-shadow: 0 0 0 2px rgba(219, 255, 45, 0.18);
+}
+
+textarea {
+  resize: vertical;
+}
+
+.form-actions {
+  margin-top: 0.25rem;
+  display: flex;
+  gap: 0.55rem;
+  flex-wrap: wrap;
+}
+
+button {
+  border: 0;
+  height: 2.2rem;
+  border-radius: 0.55rem;
+  background: linear-gradient(130deg, #efff7d, #cde900);
+  color: #101010;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  padding: 0 0.95rem;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: rgba(219, 255, 45, 0.17);
+  color: var(--text);
+  border: 1px solid rgba(219, 255, 45, 0.34);
+}
+
+.feedback {
+  margin: 0.4rem 0 0;
+  color: #e7eccc;
+  font-size: 0.8rem;
+}
+
+.preview h2 {
+  margin: 0;
+  color: var(--neon);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+}
+
+.preview-card {
+  margin-top: 0.8rem;
+}
+
+.preview-card h3 {
+  margin: 0;
+}
+
+.preview-card p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.preview-card h4 {
+  margin: 1rem 0 0.35rem;
+  color: var(--neon);
+  font-size: 0.77rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.preview-card ul {
+  margin: 0;
+  padding-left: 1rem;
+  line-height: 1.5;
+  font-size: 0.87rem;
+}
+
+@media (max-width: 980px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

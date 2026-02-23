@@ -1,0 +1,76 @@
+name: Angular CI
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - "feature/**"
+  pull_request:
+    branches:
+      - develop
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  angular-ci:
+    name: Lint, Test and Build
+    runs-on: ubuntu-latest
+    if: ${{ hashFiles('wagnerGiraud/package.json') != '' }}
+    defaults:
+      run:
+        working-directory: wagnerGiraud
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: wagnerGiraud/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Lint
+        run: npm run --if-present lint
+
+      - name: Test
+        env:
+          CI: true
+        run: |
+          TEST_SCRIPT=$(node -e "const p=require('./package.json'); process.stdout.write((p.scripts&&p.scripts.test)||'')")
+          if [ -z "$TEST_SCRIPT" ]; then
+            echo "No test script found. Skipping."
+            exit 0
+          fi
+
+          if echo "$TEST_SCRIPT" | grep -q "ng test"; then
+            npm run test -- --watch=false --browsers=ChromeHeadless
+          else
+            npm run test
+          fi
+
+      - name: Build
+        run: |
+          BUILD_SCRIPT=$(node -e "const p=require('./package.json'); process.stdout.write((p.scripts&&p.scripts.build)||'')")
+          if [ -z "$BUILD_SCRIPT" ]; then
+            echo "No build script found. Skipping."
+            exit 0
+          fi
+
+          if echo "$BUILD_SCRIPT" | grep -q "ng build"; then
+            npm run build -- --configuration=production
+          else
+            npm run build
+          fi

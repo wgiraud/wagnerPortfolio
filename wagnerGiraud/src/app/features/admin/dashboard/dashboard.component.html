@@ -1,0 +1,72 @@
+<div class="dashboard-page">
+  <header class="topbar">
+    <p class="brand">Dashboard</p>
+
+    <div class="actions">
+      <a class="ghost-btn" routerLink="/welcome">Ver Welcome</a>
+      <button type="button" class="ghost-btn" (click)="logout()">Sair</button>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="editor">
+      <h1>Editar conteudo do welcome</h1>
+      <p class="hint">Use uma linha por item em projetos, habilidades e linguagens.</p>
+
+      <form [formGroup]="form" (ngSubmit)="save()">
+        <label for="heroTitle">Titulo</label>
+        <input id="heroTitle" type="text" formControlName="heroTitle" />
+
+        <label for="heroDescription">Descricao</label>
+        <textarea id="heroDescription" rows="3" formControlName="heroDescription"></textarea>
+
+        <label for="projects">Projetos</label>
+        <textarea id="projects" rows="5" formControlName="projects"></textarea>
+
+        <label for="skills">Habilidades</label>
+        <textarea id="skills" rows="5" formControlName="skills"></textarea>
+
+        <label for="languages">Linguagens</label>
+        <textarea id="languages" rows="5" formControlName="languages"></textarea>
+
+        <div class="form-actions">
+          <button type="submit">Salvar</button>
+          <button type="button" class="secondary" (click)="restoreDefaults()">Restaurar padrao</button>
+        </div>
+
+        @if (statusMessage()) {
+          <p class="feedback">{{ statusMessage() }}</p>
+        }
+      </form>
+    </section>
+
+    <section class="preview">
+      <h2>Preview publicado</h2>
+      <article class="preview-card">
+        <h3>{{ content().heroTitle }}</h3>
+        <p>{{ content().heroDescription }}</p>
+
+        <h4>Projetos</h4>
+        <ul>
+          @for (project of content().projects; track project) {
+            <li>{{ project }}</li>
+          }
+        </ul>
+
+        <h4>Habilidades</h4>
+        <ul>
+          @for (skill of content().skills; track skill) {
+            <li>{{ skill }}</li>
+          }
+        </ul>
+
+        <h4>Linguagens</h4>
+        <ul>
+          @for (language of content().languages; track language) {
+            <li>{{ language }}</li>
+          }
+        </ul>
+      </article>
+    </section>
+  </main>
+</div>
