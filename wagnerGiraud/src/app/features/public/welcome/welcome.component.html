@@ -1,0 +1,112 @@
+<div class="welcome-page">
+  <div class="ambient-grid" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow--a" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow--b" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <p class="brand">Wagner Giraud</p>
+
+    <div class="actions">
+      @if (isAuthenticated()) {
+        <a class="ghost-btn" routerLink="/dashboard">Dashboard</a>
+      } @else {
+        <a class="ghost-btn" routerLink="/login">Login</a>
+      }
+    </div>
+  </header>
+
+  <aside class="left-rail" aria-label="Section navigation">
+    @for (item of quickNav; track item.id) {
+      <a class="rail-item" [href]="'#' + item.id">
+        <span class="rail-dot"></span>
+        <span class="rail-label">{{ item.label }}</span>
+      </a>
+    }
+  </aside>
+
+  <main class="content">
+    <section class="hero" id="home">
+      <p class="hero-kicker">Designer & Developer</p>
+      <p class="hero-badge">Portfolio</p>
+
+      <div class="hero-icons" aria-hidden="true">
+        <span class="icon-chip icon-chip--float-a">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 19L19 5M14 5H19V10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+            <path d="M5 9V5H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="icon-chip icon-chip--float-b">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 4L14.4 8.2L19 9L15.8 12.3L16.6 17L12 14.6L7.4 17L8.2 12.3L5 9L9.6 8.2L12 4Z"
+              stroke="currentColor"
+              stroke-width="1.6"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </span>
+        <span class="icon-chip icon-chip--float-c">
+          <svg viewBox="0 0 24 24" fill="none">
+            <rect x="4" y="6" width="16" height="12" rx="3" stroke="currentColor" stroke-width="1.6" />
+            <circle cx="9" cy="12" r="1.5" fill="currentColor" />
+            <path d="M13 12H16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+        </span>
+      </div>
+
+      <h1>{{ content().heroTitle }}</h1>
+      <p class="hero-text">{{ content().heroDescription }}</p>
+    </section>
+
+    <section class="cards">
+      <article class="card" id="projects">
+        <h2>
+          <svg class="section-icon section-icon--orbit" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 12C4 7.6 7.6 4 12 4C16.4 4 20 7.6 20 12" stroke="currentColor" stroke-width="1.6" />
+            <path d="M8 16L16 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <span>Projetos</span>
+        </h2>
+        <ul>
+          @for (project of content().projects; track project) {
+            <li>{{ project }}</li>
+          }
+        </ul>
+      </article>
+
+      <article class="card" id="skills">
+        <h2>
+          <svg class="section-icon section-icon--pulse" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 14H8L10.5 9L13.5 17L16 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <span>Habilidades</span>
+        </h2>
+        <ul>
+          @for (skill of content().skills; track skill) {
+            <li>{{ skill }}</li>
+          }
+        </ul>
+      </article>
+
+      <article class="card" id="stack">
+        <h2>
+          <svg class="section-icon section-icon--spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path
+              d="M12 4C7.6 4 4 7.6 4 12C4 16.4 7.6 20 12 20C16.4 20 20 16.4 20 12"
+              stroke="currentColor"
+              stroke-width="1.6"
+            />
+            <circle cx="12" cy="12" r="2.2" fill="currentColor" />
+          </svg>
+          <span>Linguagens</span>
+        </h2>
+        <ul>
+          @for (language of content().languages; track language) {
+            <li>{{ language }}</li>
+          }
+        </ul>
+      </article>
+    </section>
+  </main>
+</div>

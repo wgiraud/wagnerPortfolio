@@ -1,0 +1,49 @@
+<div class="login-page">
+  <header class="topbar">
+    <p class="brand">Wagner Giraud</p>
+    <a routerLink="/welcome" class="back-link">Voltar</a>
+  </header>
+
+  <main class="content">
+    <section class="card">
+      <p class="badge">Acesso</p>
+      <h1>Login administrativo</h1>
+
+      <form [formGroup]="loginForm" (ngSubmit)="authenticate()" novalidate>
+        <label for="username">Usuario</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          autocomplete="username"
+          placeholder="wgiraud"
+          [attr.aria-invalid]="hasFieldError('username')"
+        />
+        @if (hasFieldError('username')) {
+          <small class="field-hint">Informe o usuario.</small>
+        }
+
+        <label for="password">Senha</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          autocomplete="current-password"
+          placeholder="******"
+          [attr.aria-invalid]="hasFieldError('password')"
+        />
+        @if (hasFieldError('password')) {
+          <small class="field-hint">Informe a senha.</small>
+        }
+
+        @if (errorMessage()) {
+          <p class="feedback" role="alert">{{ errorMessage() }}</p>
+        }
+
+        <button type="submit" [disabled]="isLoading()">
+          {{ isLoading() ? 'Validando...' : 'Entrar' }}
+        </button>
+      </form>
+    </section>
+  </main>
+</div>
