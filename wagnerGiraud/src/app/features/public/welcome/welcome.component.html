@@ -1,5 +1,10 @@
 <div class="welcome-page">
   <div class="ambient-grid" aria-hidden="true"></div>
+  <div class="starfield starfield--far" aria-hidden="true"></div>
+  <div class="starfield starfield--near" aria-hidden="true"></div>
+  <div class="nebula-layer nebula-layer--one" aria-hidden="true"></div>
+  <div class="nebula-layer nebula-layer--two" aria-hidden="true"></div>
+  <div class="nebula-layer nebula-layer--three" aria-hidden="true"></div>
   <div class="ambient-glow ambient-glow--a" aria-hidden="true"></div>
   <div class="ambient-glow ambient-glow--b" aria-hidden="true"></div>
 
@@ -24,48 +29,110 @@
 
   <main class="content">
     <section class="hero" id="home">
-      <p class="hero-kicker">Designer & Developer</p>
-      <p class="hero-badge">Portfolio</p>
+      <p class="hero-name">{{ profile.name }}</p>
 
-      <div class="hero-icons" aria-hidden="true">
-        <span class="icon-chip icon-chip--float-a">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path d="M5 19L19 5M14 5H19V10" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-            <path d="M5 9V5H9" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-          </svg>
-        </span>
-        <span class="icon-chip icon-chip--float-b">
-          <svg viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 4L14.4 8.2L19 9L15.8 12.3L16.6 17L12 14.6L7.4 17L8.2 12.3L5 9L9.6 8.2L12 4Z"
-              stroke="currentColor"
-              stroke-width="1.6"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </span>
-        <span class="icon-chip icon-chip--float-c">
-          <svg viewBox="0 0 24 24" fill="none">
-            <rect x="4" y="6" width="16" height="12" rx="3" stroke="currentColor" stroke-width="1.6" />
-            <circle cx="9" cy="12" r="1.5" fill="currentColor" />
-            <path d="M13 12H16.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-          </svg>
-        </span>
+      <div class="hero-icons">
+        <a
+          class="icon-chip icon-chip-link"
+          [href]="profile.linkedin"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir LinkedIn de Wagner Giraud"
+        >
+          <img
+            src="icons/linkedin.svg"
+            alt="LinkedIn"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <a
+          class="icon-chip icon-chip-link"
+          [href]="profile.github"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Abrir GitHub de Wagner Giraud"
+        >
+          <img
+            src="icons/github.svg"
+            alt="GitHub"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+        <a
+          class="icon-chip icon-chip-link"
+          [href]="'mailto:' + profile.email"
+          aria-label="Enviar e-mail para Wagner Giraud"
+        >
+          <img
+            src="icons/email.svg"
+            alt="Email"
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
       </div>
 
-      <h1>{{ content().heroTitle }}</h1>
+      @if (content().heroTitle) {
+        <h1>{{ content().heroTitle }}</h1>
+      }
       <p class="hero-text">{{ content().heroDescription }}</p>
+
+      <div class="hero-meta">
+        <span>{{ profile.location }}</span>
+        <span>{{ profile.accessibility }}</span>
+      </div>
+
+      <div class="hero-pulse-grid" id="highlights">
+        @for (highlight of highlights; track highlight.title) {
+          <article class="pulse-card">
+            <h2>{{ highlight.title }}</h2>
+            <p>{{ highlight.detail }}</p>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <header class="section-head">
+        <p>Sobre Mim</p>
+      </header>
+
+      <div class="about-content">
+        @for (paragraph of aboutParagraphs; track paragraph) {
+          <p>{{ paragraph }}</p>
+        }
+      </div>
+    </section>
+
+    <section class="journey" id="journey">
+      <header class="section-head">
+        <p>Trajetoria Profissional</p>
+        <span>2017 - Atual</span>
+      </header>
+
+      <div class="journey-track">
+        @for (item of journey; track item.company) {
+          <article class="journey-item">
+            <p class="journey-period">{{ item.period }}</p>
+            <h3>{{ item.role }}</h3>
+            <p class="journey-company">{{ item.company }}</p>
+            <p class="journey-location">{{ item.location }}</p>
+
+            <ul>
+              @for (outcome of item.outcomes; track outcome) {
+                <li>{{ outcome }}</li>
+              }
+            </ul>
+          </article>
+        }
+      </div>
     </section>
 
     <section class="cards">
-      <article class="card" id="projects">
-        <h2>
-          <svg class="section-icon section-icon--orbit" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 12C4 7.6 7.6 4 12 4C16.4 4 20 7.6 20 12" stroke="currentColor" stroke-width="1.6" />
-            <path d="M8 16L16 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-          </svg>
-          <span>Projetos</span>
-        </h2>
+      <article class="card">
+        <h2>Projetos Chave</h2>
         <ul>
           @for (project of content().projects; track project) {
             <li>{{ project }}</li>
@@ -73,13 +140,8 @@
         </ul>
       </article>
 
-      <article class="card" id="skills">
-        <h2>
-          <svg class="section-icon section-icon--pulse" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 14H8L10.5 9L13.5 17L16 12H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
-          </svg>
-          <span>Habilidades</span>
-        </h2>
+      <article class="card">
+        <h2>Habilidades</h2>
         <ul>
           @for (skill of content().skills; track skill) {
             <li>{{ skill }}</li>
@@ -87,24 +149,52 @@
         </ul>
       </article>
 
-      <article class="card" id="stack">
-        <h2>
-          <svg class="section-icon section-icon--spin" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M12 4C7.6 4 4 7.6 4 12C4 16.4 7.6 20 12 20C16.4 20 20 16.4 20 12"
-              stroke="currentColor"
-              stroke-width="1.6"
-            />
-            <circle cx="12" cy="12" r="2.2" fill="currentColor" />
-          </svg>
-          <span>Linguagens</span>
-        </h2>
+      <article class="card">
+        <h2>Educacao</h2>
         <ul>
-          @for (language of content().languages; track language) {
-            <li>{{ language }}</li>
-          }
+          <li>Pos-graduacao em Engenharia de Software com Metodos Ageis.</li>
+          <li>Foco em arquitetura limpa/hexagonal e praticas SOLID.</li>
         </ul>
       </article>
+    </section>
+
+    <section class="stack-board" id="stack">
+      <header class="section-head">
+        <p>Stack Tecnica</p>
+        <span>Da engenharia ao deploy</span>
+      </header>
+
+      <div class="stack-grid">
+        @for (group of stackGroups; track group.title) {
+          <article class="stack-group">
+            <h3>{{ group.title }}</h3>
+            <div class="stack-chips">
+              @for (item of group.items; track item.label) {
+                <span class="stack-chip">
+                  <span class="stack-logo-wrap" aria-hidden="true">
+                    @if (item.iconSlug) {
+                      <img
+                        class="stack-logo"
+                        [src]="'https://cdn.simpleicons.org/' + item.iconSlug + '/dbff2d'"
+                        [alt]="'Logo ' + item.label"
+                        (error)="onTechIconError($event)"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <span class="stack-logo-fallback">{{ item.monogram ?? item.label }}</span>
+                    } @else {
+                      <span class="stack-logo-fallback stack-logo-fallback--visible">
+                        {{ item.monogram ?? item.label }}
+                      </span>
+                    }
+                  </span>
+                  <span>{{ item.label }}</span>
+                </span>
+              }
+            </div>
+          </article>
+        }
+      </div>
     </section>
   </main>
 </div>
