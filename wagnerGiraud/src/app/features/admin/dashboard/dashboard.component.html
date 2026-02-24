@@ -12,8 +12,8 @@
     <section class="editor">
       <h1>Editar conteudo do welcome</h1>
       <p class="hint">
-        Edite cada projeto com titulo, descricao, link e imagem. Voce pode escolher imagem do
-        dispositivo (ate 1.1 MB).
+        Cada projeto agora possui apenas titulo, descricao e link. Ao salvar um projeto, o
+        formulario e limpo para o proximo cadastro.
       </p>
 
       <form [formGroup]="form" (ngSubmit)="save()">
@@ -23,74 +23,57 @@
         <label for="heroDescription">Descricao</label>
         <textarea id="heroDescription" rows="3" formControlName="heroDescription"></textarea>
 
-        <div class="project-editor" formArrayName="projects">
+        <div class="project-editor">
           <div class="project-editor-head">
-            <label>Projetos Reais</label>
-            <button type="button" class="secondary small-btn" (click)="addProject()">
-              Adicionar projeto
-            </button>
+            <label>Novo projeto</label>
+            <p>Preencha um por vez e clique em salvar.</p>
           </div>
 
-          @for (projectGroup of projectForms; track $index) {
-            <article class="project-form-card" [formGroupName]="$index">
-              <div class="project-form-header">
-                <p>Projeto {{ $index + 1 }}</p>
-                <button
-                  type="button"
-                  class="ghost-inline-btn"
-                  (click)="removeProject($index)"
-                  [disabled]="projectForms.length <= 1"
-                >
-                  Remover
-                </button>
-              </div>
+          <article class="project-form-card" formGroupName="projectDraft">
+            <label for="projectName">Titulo</label>
+            <input id="projectName" type="text" formControlName="name" placeholder="Nome do projeto" />
 
-              <label>Titulo</label>
-              <input type="text" formControlName="name" placeholder="Nome do projeto" />
+            <label for="projectDescription">Descricao</label>
+            <textarea
+              id="projectDescription"
+              rows="2"
+              formControlName="description"
+              placeholder="Resumo curto do projeto"
+            ></textarea>
 
-              <label>Descricao</label>
-              <textarea
-                rows="2"
-                formControlName="description"
-                placeholder="Resumo curto do projeto"
-              ></textarea>
+            <label for="projectUrl">Link</label>
+            <input id="projectUrl" type="url" formControlName="url" placeholder="https://projeto.com" />
+          </article>
 
-              <label>Link</label>
-              <input type="url" formControlName="url" placeholder="https://projeto.com" />
-
-              <label>Imagem</label>
-              <input
-                type="text"
-                formControlName="imageUrl"
-                placeholder="https://imagem.com/preview.png ou assets/projeto.png"
-              />
-              <div class="project-image-tools">
-                <input
-                  class="file-input"
-                  type="file"
-                  accept="image/*"
-                  (change)="onProjectImageSelected($index, $event)"
-                />
-                <button
-                  type="button"
-                  class="ghost-inline-btn"
-                  (click)="clearProjectImage($index)"
-                  [disabled]="!projectGroup.controls.imageUrl.value"
-                >
-                  Limpar imagem
-                </button>
-              </div>
-
-              @if (projectGroup.controls.imageUrl.value) {
-                <figure class="project-image-preview">
-                  <img
-                    [src]="projectGroup.controls.imageUrl.value"
-                    [alt]="'Preview da imagem do projeto ' + ($index + 1)"
-                  />
-                </figure>
-              }
-            </article>
-          }
+          <section class="saved-projects">
+            <label>Projetos cadastrados</label>
+            @if (content().projects.length > 0) {
+              <ul>
+                @for (project of content().projects; track project.name + '-' + $index) {
+                  <li>
+                    <div class="saved-project-copy">
+                      <strong>{{ project.name }}</strong>
+                      @if (project.description) {
+                        <small class="project-desc">{{ project.description }}</small>
+                      }
+                      @if (project.url) {
+                        <a [href]="project.url" target="_blank" rel="noopener noreferrer">Abrir projeto</a>
+                      }
+                    </div>
+                    <button
+                      type="button"
+                      class="ghost-inline-btn"
+                      (click)="removeProject($index)"
+                    >
+                      Remover
+                    </button>
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p class="saved-projects-empty">Nenhum projeto cadastrado.</p>
+            }
+          </section>
         </div>
 
         <label for="skills">Habilidades</label>
@@ -100,7 +83,7 @@
         <textarea id="languages" rows="5" formControlName="languages"></textarea>
 
         <div class="form-actions">
-          <button type="submit">Salvar</button>
+          <button type="submit">Salvar e abrir novo formulario</button>
           <button type="button" class="secondary" (click)="restoreDefaults()">Restaurar padrao</button>
         </div>
 
@@ -118,14 +101,11 @@
 
         <h4>Projetos</h4>
         <ul>
-          @for (project of content().projects; track project.name) {
+          @for (project of content().projects; track project.name + '-' + $index) {
             <li>
               <strong>{{ project.name }}</strong>
               @if (project.description) {
                 <small class="project-desc">{{ project.description }}</small>
-              }
-              @if (project.imageUrl) {
-                <small class="project-meta">Foto configurada</small>
               }
               @if (project.url) {
                 <a [href]="project.url" target="_blank" rel="noopener noreferrer">Abrir projeto</a>

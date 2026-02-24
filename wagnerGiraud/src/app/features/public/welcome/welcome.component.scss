@@ -32,6 +32,7 @@
   background-size: 2.5rem 2.5rem;
   mask-image: radial-gradient(circle at center, #000 38%, transparent 100%);
   animation: grid-drift 18s linear infinite;
+  will-change: transform;
 }
 
 .starfield {
@@ -40,6 +41,8 @@
   pointer-events: none;
   z-index: 0;
   mix-blend-mode: screen;
+  will-change: transform, opacity;
+  display: none;
 }
 
 .starfield--far {
@@ -66,9 +69,11 @@
   position: absolute;
   inset: -16%;
   pointer-events: none;
-  filter: blur(52px);
+  filter: blur(38px);
   opacity: 0.26;
   mix-blend-mode: screen;
+  will-change: transform, opacity;
+  display: none;
 }
 
 .nebula-layer--one {
@@ -95,8 +100,9 @@
   position: absolute;
   pointer-events: none;
   border-radius: 999px;
-  filter: blur(54px);
+  filter: blur(38px);
   opacity: 0.32;
+  will-change: transform, opacity;
 }
 
 .ambient-glow--a {
@@ -367,6 +373,15 @@ h1 {
   animation: reveal-up 660ms ease 130ms forwards;
 }
 
+.projects-section,
+.about,
+.journey,
+.cards,
+.stack-board {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 760px;
+}
+
 .section-head--projects {
   display: block;
 }
@@ -463,34 +478,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 0.62rem;
-}
-
-.project-media {
-  margin: 0;
-  border-radius: 0.62rem;
-  overflow: hidden;
-  border: 1px solid rgba(219, 255, 45, 0.22);
-  aspect-ratio: 16 / 10;
-  background: linear-gradient(145deg, rgba(219, 255, 45, 0.13), rgba(10, 10, 10, 0.86));
-}
-
-.project-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.project-media--placeholder {
-  display: grid;
-  place-items: center;
-}
-
-.project-media--placeholder span {
-  color: #e4ebbf;
-  font-size: 0.68rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .project-card h3 {
@@ -643,7 +630,6 @@ h1 {
   background: var(--panel);
   border-radius: 0.9rem;
   padding: 0.95rem;
-  backdrop-filter: blur(4px);
   opacity: 0;
   transform: translateY(20px);
   animation: reveal-up 620ms ease 220ms forwards;
@@ -879,6 +865,16 @@ h1 {
 }
 
 @media (max-width: 860px) {
+  .ambient-grid,
+  .ambient-glow {
+    display: none;
+  }
+
+  .starfield,
+  .nebula-layer {
+    display: block;
+  }
+
   .welcome-page {
     padding: 0.95rem 0.82rem 1.65rem;
   }
