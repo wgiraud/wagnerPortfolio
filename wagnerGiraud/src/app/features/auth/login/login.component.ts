@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthenticatePortfolioOwnerUseCase } from '../../../core/application/use-cases/authenticate-portfolio-owner.use-case';
@@ -14,7 +14,8 @@ type LoginForm = FormGroup<{
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
   private readonly authenticatePortfolioOwnerUseCase = inject(AuthenticatePortfolioOwnerUseCase);

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthSessionStore } from '../../../core/application/state/auth-session.store';
 import { PortfolioContentStore } from '../../../core/application/state/portfolio-content.store';
@@ -33,6 +33,7 @@ type StackGroup = {
   imports: [RouterLink],
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class WelcomeComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);

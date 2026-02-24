@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -32,7 +32,8 @@ type ProjectFormGroup = FormGroup<{
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);
