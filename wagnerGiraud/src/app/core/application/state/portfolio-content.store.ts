@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import {
   PortfolioContent,
-  PortfolioProject,
+  PortfolioProject
 } from '../../domain/portfolio/portfolio-content.model';
 
 const REMOVED_HERO_TITLES = new Set<string>([
@@ -131,9 +131,6 @@ export class PortfolioContentStore {
       summary?: unknown;
       url?: unknown;
       link?: unknown;
-      imageUrl?: unknown;
-      image?: unknown;
-      screenshot?: unknown;
     };
 
     const rawName =
@@ -164,21 +161,10 @@ export class PortfolioContentStore {
           : '';
 
     const url = this.normalizeProjectUrl(rawUrl);
-    const rawImageUrl =
-      typeof candidate.imageUrl === 'string'
-        ? candidate.imageUrl
-        : typeof candidate.image === 'string'
-          ? candidate.image
-          : typeof candidate.screenshot === 'string'
-            ? candidate.screenshot
-            : '';
-
-    const imageUrl = this.normalizeProjectImageUrl(rawImageUrl);
     return {
       name,
       ...(description ? { description } : {}),
-      ...(url ? { url } : {}),
-      ...(imageUrl ? { imageUrl } : {}),
+      ...(url ? { url } : {})
     };
   }
 
@@ -196,20 +182,19 @@ export class PortfolioContentStore {
       return { name };
     }
 
-    if (thirdPart) {
-      const url = this.normalizeProjectUrl(secondPart);
-      const imageUrl = this.normalizeProjectImageUrl(thirdPart);
-
-      return { name, ...(url ? { url } : {}), ...(imageUrl ? { imageUrl } : {}) };
-    }
-
     const parsedUrl = this.normalizeProjectUrl(secondPart);
     if (parsedUrl) {
       return { name, url: parsedUrl };
     }
 
-    const imageUrl = this.normalizeProjectImageUrl(secondPart);
-    return { name, ...(imageUrl ? { imageUrl } : {}) };
+    if (thirdPart) {
+      const legacyUrl = this.normalizeProjectUrl(thirdPart);
+      if (legacyUrl) {
+        return { name, url: legacyUrl };
+      }
+    }
+
+    return { name };
   }
 
   private normalizeProjectUrl(value: string): string | undefined {
@@ -219,23 +204,6 @@ export class PortfolioContentStore {
     }
 
     return /^https?:\/\//i.test(url) ? url : undefined;
-  }
-
-  private normalizeProjectImageUrl(value: string): string | undefined {
-    const url = value.trim();
-    if (!url) {
-      return undefined;
-    }
-
-    if (/^javascript:/i.test(url)) {
-      return undefined;
-    }
-
-    if (/^data:/i.test(url) && !/^data:image\//i.test(url)) {
-      return undefined;
-    }
-
-    return url;
   }
 
   private sanitizeHeroTitle(value: string): string {
@@ -251,7 +219,7 @@ export class PortfolioContentStore {
     try {
       window.localStorage.setItem(this.storageKey, JSON.stringify(content));
     } catch {
-      // Keep app usable when localStorage quota is exceeded by large inline images.
+      // Keep app usable when localStorage quota is exceeded.
     }
   }
 }

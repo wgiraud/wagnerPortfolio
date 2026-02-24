@@ -111,12 +111,6 @@ textarea {
   resize: vertical;
 }
 
-.small-btn {
-  height: 1.9rem;
-  font-size: 0.66rem;
-  padding: 0 0.78rem;
-}
-
 .project-editor {
   margin-top: 0.25rem;
   display: grid;
@@ -134,6 +128,12 @@ textarea {
   margin: 0;
 }
 
+.project-editor-head p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.73rem;
+}
+
 .project-form-card {
   border: 1px solid rgba(219, 255, 45, 0.24);
   border-radius: 0.65rem;
@@ -141,21 +141,6 @@ textarea {
   padding: 0.68rem;
   display: grid;
   gap: 0.45rem;
-}
-
-.project-form-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.55rem;
-}
-
-.project-form-header p {
-  margin: 0;
-  color: var(--neon);
-  font-size: 0.74rem;
-  text-transform: uppercase;
-  letter-spacing: 0.09em;
 }
 
 .ghost-inline-btn {
@@ -176,47 +161,56 @@ textarea {
   cursor: not-allowed;
 }
 
-.project-image-tools {
+.saved-projects {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.saved-projects ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.saved-projects li {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.55rem;
-}
-
-.file-input {
-  max-width: 100%;
-  color: var(--muted);
-  font-size: 0.75rem;
-}
-
-.file-input::file-selector-button {
-  border: 1px solid rgba(219, 255, 45, 0.32);
-  border-radius: 0.45rem;
-  background: rgba(219, 255, 45, 0.12);
-  color: var(--text);
-  text-transform: uppercase;
-  font-size: 0.62rem;
-  letter-spacing: 0.08em;
-  font-weight: 700;
-  padding: 0.35rem 0.55rem;
-  margin-right: 0.45rem;
-  cursor: pointer;
-}
-
-.project-image-preview {
-  margin: 0.1rem 0 0;
+  gap: 0.65rem;
   border: 1px solid rgba(219, 255, 45, 0.24);
   border-radius: 0.6rem;
-  overflow: hidden;
-  background: rgba(8, 8, 8, 0.86);
-  aspect-ratio: 16 / 9;
+  background: rgba(8, 8, 8, 0.68);
+  padding: 0.5rem;
 }
 
-.project-image-preview img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.saved-project-copy {
+  display: grid;
+  gap: 0.1rem;
+}
+
+.saved-project-copy strong {
+  font-size: 0.82rem;
+}
+
+.saved-project-copy a {
+  width: fit-content;
+  color: #e8f39f;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(219, 255, 45, 0.45);
+  font-size: 0.74rem;
+}
+
+.saved-project-copy a:hover {
+  color: #f3ffbf;
+}
+
+.saved-projects-empty {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
 .form-actions {
@@ -303,16 +297,6 @@ button.secondary {
 
 .preview-card li a:hover {
   color: #f3ffbf;
-}
-
-.project-meta {
-  font-size: 0.67rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--muted);
-  border: 1px solid rgba(219, 255, 45, 0.3);
-  border-radius: 999px;
-  padding: 0.05rem 0.35rem;
 }
 
 .project-desc {

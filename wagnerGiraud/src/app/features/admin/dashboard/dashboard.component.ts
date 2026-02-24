@@ -1,6 +1,5 @@
-import { Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import {
-  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -17,7 +16,7 @@ import {
 type DashboardForm = FormGroup<{
   heroTitle: FormControl<string>;
   heroDescription: FormControl<string>;
-  projects: FormArray<ProjectFormGroup>;
+  projectDraft: ProjectFormGroup;
   skills: FormControl<string>;
   languages: FormControl<string>;
 }>;
@@ -26,7 +25,6 @@ type ProjectFormGroup = FormGroup<{
   name: FormControl<string>;
   description: FormControl<string>;
   url: FormControl<string>;
-  imageUrl: FormControl<string>;
 }>;
 
 @Component({
@@ -34,11 +32,10 @@ type ProjectFormGroup = FormGroup<{
   standalone: true,
   imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
-  private readonly maxProjectImageBytes = 1_200_000;
-  private readonly maxProjectImageMb = this.maxProjectImageBytes / (1024 * 1024);
   private readonly portfolioContentStore = inject(PortfolioContentStore);
   private readonly authSessionStore = inject(AuthSessionStore);
   private readonly router = inject(Router);
@@ -47,75 +44,25 @@ export class DashboardComponent {
   protected readonly statusMessage = signal('');
 
   protected readonly form: DashboardForm = this.createForm(this.content());
-  protected get projectForms(): ProjectFormGroup[] {
-    return this.form.controls.projects.controls;
-  }
 
   protected async logout(): Promise<void> {
     this.authSessionStore.endSession();
     await this.router.navigateByUrl('/welcome');
   }
 
-  protected addProject(): void {
-    this.form.controls.projects.push(this.createProjectGroup());
-  }
-
   protected removeProject(index: number): void {
-    if (this.form.controls.projects.length <= 1) {
+    const currentContent = this.content();
+    const currentProjects = currentContent.projects;
+    if (index < 0 || index >= currentProjects.length) {
       return;
     }
 
-    this.form.controls.projects.removeAt(index);
-  }
-
-  protected onProjectImageSelected(index: number, event: Event): void {
-    const input = event.target as HTMLInputElement | null;
-    const file = input?.files?.[0];
-    if (!file) {
-      return;
-    }
-
-    if (!file.type.startsWith('image/')) {
-      this.statusMessage.set('Selecione um arquivo de imagem valido.');
-      input.value = '';
-      return;
-    }
-
-    if (file.size > this.maxProjectImageBytes) {
-      this.statusMessage.set(
-        `Imagem acima do limite. Use ate ${this.maxProjectImageMb.toFixed(1)} MB.`
-      );
-      input.value = '';
-      return;
-    }
-
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result !== 'string') {
-        this.statusMessage.set('Falha ao processar a imagem selecionada.');
-        return;
-      }
-
-      const projectForm = this.form.controls.projects.at(index);
-      projectForm.controls.imageUrl.setValue(reader.result);
-      projectForm.controls.imageUrl.markAsDirty();
-      this.statusMessage.set(`Imagem do projeto ${index + 1} carregada com sucesso.`);
-      input.value = '';
-    };
-
-    reader.onerror = () => {
-      this.statusMessage.set('Falha ao ler o arquivo da imagem.');
-      input.value = '';
-    };
-
-    reader.readAsDataURL(file);
-  }
-
-  protected clearProjectImage(index: number): void {
-    const projectForm = this.form.controls.projects.at(index);
-    projectForm.controls.imageUrl.setValue('');
-    projectForm.controls.imageUrl.markAsDirty();
-    this.statusMessage.set(`Imagem do projeto ${index + 1} removida.`);
+    const nextProjects = currentProjects.filter((_, projectIndex) => projectIndex !== index);
+    this.portfolioContentStore.save({
+      ...currentContent,
+      projects: nextProjects
+    });
+    this.statusMessage.set('Projeto removido.');
   }
 
   protected save(): void {
@@ -124,16 +71,18 @@ export class DashboardComponent {
       return;
     }
 
-    const value = this.form.getRawValue();
-    const nextContent: PortfolioContent = {
-      heroTitle: value.heroTitle.trim(),
-      heroDescription: value.heroDescription.trim(),
-      projects: this.parseProjectList(this.projectForms),
-      skills: this.parseList(value.skills),
-      languages: this.parseList(value.languages)
-    };
+    const draftProject = this.parseProject(this.form.controls.projectDraft.getRawValue());
+    const currentProjects = this.content().projects;
+    const nextProjects = draftProject ? [...currentProjects, draftProject] : currentProjects;
 
-    this.portfolioContentStore.save(nextContent);
+    this.portfolioContentStore.save(this.buildContent(nextProjects));
+
+    if (draftProject) {
+      this.resetProjectDraft();
+      this.statusMessage.set('Projeto salvo. Formulario pronto para o proximo cadastro.');
+      return;
+    }
+
     this.statusMessage.set('Conteudo atualizado no welcome.');
   }
 
@@ -152,7 +101,7 @@ export class DashboardComponent {
         nonNullable: true,
         validators: [Validators.required]
       }),
-      projects: this.createProjectArray(content.projects),
+      projectDraft: this.createProjectGroup(),
       skills: new FormControl(this.joinList(content.skills), {
         nonNullable: true,
         validators: [Validators.required]
@@ -169,16 +118,7 @@ export class DashboardComponent {
     this.form.controls.heroDescription.setValue(content.heroDescription);
     this.form.controls.skills.setValue(this.joinList(content.skills));
     this.form.controls.languages.setValue(this.joinList(content.languages));
-
-    const projectArray = this.form.controls.projects;
-    projectArray.clear();
-
-    if (content.projects.length === 0) {
-      projectArray.push(this.createProjectGroup());
-      return;
-    }
-
-    content.projects.forEach((project) => projectArray.push(this.createProjectGroup(project)));
+    this.resetProjectDraft();
   }
 
   private parseList(rawValue: string): string[] {
@@ -192,15 +132,6 @@ export class DashboardComponent {
     return items.join('\n');
   }
 
-  private createProjectArray(projects: PortfolioProject[]): FormArray<ProjectFormGroup> {
-    const groups =
-      projects.length > 0
-        ? projects.map((project) => this.createProjectGroup(project))
-        : [this.createProjectGroup()];
-
-    return new FormArray<ProjectFormGroup>(groups);
-  }
-
   private createProjectGroup(project?: PortfolioProject): ProjectFormGroup {
     return new FormGroup({
       name: new FormControl(project?.name ?? '', {
@@ -211,34 +142,49 @@ export class DashboardComponent {
       }),
       url: new FormControl(project?.url ?? '', {
         nonNullable: true
-      }),
-      imageUrl: new FormControl(project?.imageUrl ?? '', {
-        nonNullable: true
       })
     });
   }
 
-  private parseProjectList(projectForms: ProjectFormGroup[]): PortfolioProject[] {
-    return projectForms
-      .map((group) => group.getRawValue())
-      .map((project) => {
-        const name = project.name.trim();
-        if (!name) {
-          return null;
-        }
+  private parseProject(project: {
+    name: string;
+    description: string;
+    url: string;
+  }): PortfolioProject | null {
+    const name = project.name.trim();
+    if (!name) {
+      return null;
+    }
 
-        const description = project.description.trim();
-        const url = this.normalizeProjectUrl(project.url);
-        const imageUrl = this.normalizeProjectImageUrl(project.imageUrl);
+    const description = project.description.trim();
+    const url = this.normalizeProjectUrl(project.url);
 
-        return {
-          name,
-          ...(description ? { description } : {}),
-          ...(url ? { url } : {}),
-          ...(imageUrl ? { imageUrl } : {})
-        };
-      })
-      .filter((item): item is PortfolioProject => item !== null);
+    return {
+      name,
+      ...(description ? { description } : {}),
+      ...(url ? { url } : {})
+    };
+  }
+
+  private buildContent(projects: PortfolioProject[]): PortfolioContent {
+    const value = this.form.getRawValue();
+    return {
+      heroTitle: value.heroTitle.trim(),
+      heroDescription: value.heroDescription.trim(),
+      projects,
+      skills: this.parseList(value.skills),
+      languages: this.parseList(value.languages)
+    };
+  }
+
+  private resetProjectDraft(): void {
+    this.form.controls.projectDraft.setValue({
+      name: '',
+      description: '',
+      url: ''
+    });
+    this.form.controls.projectDraft.markAsPristine();
+    this.form.controls.projectDraft.markAsUntouched();
   }
 
   private normalizeProjectUrl(rawUrl: string): string | undefined {
@@ -248,22 +194,5 @@ export class DashboardComponent {
     }
 
     return /^https?:\/\//i.test(url) ? url : undefined;
-  }
-
-  private normalizeProjectImageUrl(rawUrl: string): string | undefined {
-    const url = rawUrl.trim();
-    if (!url) {
-      return undefined;
-    }
-
-    if (/^javascript:/i.test(url)) {
-      return undefined;
-    }
-
-    if (/^data:/i.test(url) && !/^data:image\//i.test(url)) {
-      return undefined;
-    }
-
-    return url;
   }
 }
