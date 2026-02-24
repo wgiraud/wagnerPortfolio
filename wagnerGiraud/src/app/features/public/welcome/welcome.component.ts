@@ -38,14 +38,6 @@ export class WelcomeComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);
   private readonly authSessionStore = inject(AuthSessionStore);
 
-  protected readonly quickNav = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'Sobre' },
-    { id: 'journey', label: 'Trajetoria' },
-    { id: 'highlights', label: 'Highlights' },
-    { id: 'stack', label: 'Stack' }
-  ];
-
   protected readonly profile = {
     name: 'Wagner Giraud',
     email: 'wagner_giraud@outlook.com',
@@ -166,19 +158,4 @@ export class WelcomeComponent {
 
   protected readonly content = this.portfolioContentStore.content;
   protected readonly isAuthenticated = this.authSessionStore.isAuthenticated;
-
-  protected onTechIconError(event: Event): void {
-    const target = event.target;
-
-    if (!(target instanceof HTMLImageElement)) {
-      return;
-    }
-
-    target.classList.add('stack-logo--hidden');
-
-    const fallback = target.nextElementSibling;
-    if (fallback instanceof HTMLElement) {
-      fallback.classList.add('stack-logo-fallback--visible');
-    }
-  }
 }

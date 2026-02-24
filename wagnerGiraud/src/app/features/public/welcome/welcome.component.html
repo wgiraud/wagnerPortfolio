@@ -18,17 +18,8 @@
     </div>
   </header>
 
-  <aside class="left-rail" aria-label="Section navigation">
-    @for (item of quickNav; track item.id) {
-      <a class="rail-item" [href]="'#' + item.id">
-        <span class="rail-dot"></span>
-        <span class="rail-label">{{ item.label }}</span>
-      </a>
-    }
-  </aside>
-
   <main class="content">
-    <section class="hero" id="home">
+    <section class="hero-header" id="home">
       <p class="hero-name">{{ profile.name }}</p>
 
       <div class="hero-icons">
@@ -73,7 +64,9 @@
           />
         </a>
       </div>
+    </section>
 
+    <section class="hero">
       @if (content().heroTitle) {
         <h1>{{ content().heroTitle }}</h1>
       }
@@ -172,21 +165,9 @@
               @for (item of group.items; track item.label) {
                 <span class="stack-chip">
                   <span class="stack-logo-wrap" aria-hidden="true">
-                    @if (item.iconSlug) {
-                      <img
-                        class="stack-logo"
-                        [src]="'https://cdn.simpleicons.org/' + item.iconSlug + '/dbff2d'"
-                        [alt]="'Logo ' + item.label"
-                        (error)="onTechIconError($event)"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      <span class="stack-logo-fallback">{{ item.monogram ?? item.label }}</span>
-                    } @else {
-                      <span class="stack-logo-fallback stack-logo-fallback--visible">
-                        {{ item.monogram ?? item.label }}
-                      </span>
-                    }
+                    <span class="stack-logo-fallback stack-logo-fallback--visible">
+                      {{ item.monogram ?? item.label }}
+                    </span>
                   </span>
                   <span>{{ item.label }}</span>
                 </span>
