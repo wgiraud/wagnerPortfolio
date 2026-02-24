@@ -20,6 +20,17 @@
 
   <main class="content">
     <section class="hero-header" id="home">
+      <figure class="hero-profile" aria-label="Foto de perfil de Wagner Giraud">
+        <div class="hero-profile-frame">
+          <img
+            src="profile/perfil.png"
+            alt="Foto de perfil de Wagner Giraud"
+            loading="eager"
+            decoding="async"
+          />
+        </div>
+      </figure>
+
       <p class="hero-name">{{ profile.name }}</p>
 
       <div class="hero-icons">
@@ -87,6 +98,76 @@
       </div>
     </section>
 
+    <section
+      class="projects-section"
+      id="projects"
+      [class.projects-section--open]="isProjectsExpanded()"
+    >
+      <header class="section-head section-head--projects">
+        <button
+          type="button"
+          class="projects-toggle"
+          [attr.aria-expanded]="isProjectsExpanded()"
+          aria-controls="projects-dropdown-body"
+          (click)="toggleProjectsDropdown()"
+        >
+          <span class="projects-toggle-main">
+            <span class="projects-toggle-title">Projetos Reais</span>
+            <span class="projects-toggle-subtitle">Fotos do sistema e link do projeto</span>
+          </span>
+          <span class="projects-toggle-icon" aria-hidden="true">▾</span>
+        </button>
+      </header>
+
+      <div
+        id="projects-dropdown-body"
+        class="projects-dropdown-body"
+        [class.projects-dropdown-body--open]="isProjectsExpanded()"
+        [attr.aria-hidden]="!isProjectsExpanded()"
+      >
+        @if (content().projects.length > 0) {
+          <div class="project-grid">
+            @for (project of content().projects; track project.name) {
+              <article class="project-card">
+                @if (project.imageUrl) {
+                  <figure class="project-media">
+                    <img
+                      [src]="project.imageUrl"
+                      [alt]="'Preview do projeto ' + project.name"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </figure>
+                } @else {
+                  <div class="project-media project-media--placeholder" aria-hidden="true">
+                    <span>Preview do sistema</span>
+                  </div>
+                }
+
+                <h3>{{ project.name }}</h3>
+                @if (project.description) {
+                  <p class="project-description">{{ project.description }}</p>
+                }
+
+                @if (project.url) {
+                  <a
+                    class="project-link"
+                    [href]="project.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Acessar projeto
+                  </a>
+                }
+              </article>
+            }
+          </div>
+        } @else {
+          <p class="project-empty">Nenhum projeto publicado no momento.</p>
+        }
+      </div>
+    </section>
+
     <section class="about" id="about">
       <header class="section-head">
         <p>Sobre Mim</p>
@@ -124,15 +205,6 @@
     </section>
 
     <section class="cards">
-      <article class="card">
-        <h2>Projetos Chave</h2>
-        <ul>
-          @for (project of content().projects; track project) {
-            <li>{{ project }}</li>
-          }
-        </ul>
-      </article>
-
       <article class="card">
         <h2>Habilidades</h2>
         <ul>

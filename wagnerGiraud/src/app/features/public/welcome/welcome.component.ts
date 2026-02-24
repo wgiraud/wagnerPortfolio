@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthSessionStore } from '../../../core/application/state/auth-session.store';
 import { PortfolioContentStore } from '../../../core/application/state/portfolio-content.store';
@@ -37,6 +37,7 @@ type StackGroup = {
 export class WelcomeComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);
   private readonly authSessionStore = inject(AuthSessionStore);
+  protected readonly isProjectsExpanded = signal(false);
 
   protected readonly profile = {
     name: 'Wagner Giraud',
@@ -158,4 +159,8 @@ export class WelcomeComponent {
 
   protected readonly content = this.portfolioContentStore.content;
   protected readonly isAuthenticated = this.authSessionStore.isAuthenticated;
+
+  protected toggleProjectsDropdown(): void {
+    this.isProjectsExpanded.update((value) => !value);
+  }
 }
