@@ -113,7 +113,7 @@
         >
           <span class="projects-toggle-main">
             <span class="projects-toggle-title">Projetos Reais</span>
-            <span class="projects-toggle-subtitle">Fotos do sistema e link do projeto</span>
+            <span class="projects-toggle-subtitle">Titulo, descricao e link do projeto</span>
           </span>
           <span class="projects-toggle-icon" aria-hidden="true">▾</span>
         </button>
@@ -129,21 +129,6 @@
           <div class="project-grid">
             @for (project of content().projects; track project.name) {
               <article class="project-card">
-                @if (project.imageUrl) {
-                  <figure class="project-media">
-                    <img
-                      [src]="project.imageUrl"
-                      [alt]="'Preview do projeto ' + project.name"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </figure>
-                } @else {
-                  <div class="project-media project-media--placeholder" aria-hidden="true">
-                    <span>Preview do sistema</span>
-                  </div>
-                }
-
                 <h3>{{ project.name }}</h3>
                 @if (project.description) {
                   <p class="project-description">{{ project.description }}</p>
