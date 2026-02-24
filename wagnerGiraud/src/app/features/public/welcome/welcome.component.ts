@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthSessionStore } from '../../../core/application/state/auth-session.store';
 import { PortfolioContentStore } from '../../../core/application/state/portfolio-content.store';
@@ -37,14 +37,7 @@ type StackGroup = {
 export class WelcomeComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);
   private readonly authSessionStore = inject(AuthSessionStore);
-
-  protected readonly quickNav = [
-    { id: 'home', label: 'Home' },
-    { id: 'about', label: 'Sobre' },
-    { id: 'journey', label: 'Trajetoria' },
-    { id: 'highlights', label: 'Highlights' },
-    { id: 'stack', label: 'Stack' }
-  ];
+  protected readonly isProjectsExpanded = signal(false);
 
   protected readonly profile = {
     name: 'Wagner Giraud',
@@ -167,18 +160,7 @@ export class WelcomeComponent {
   protected readonly content = this.portfolioContentStore.content;
   protected readonly isAuthenticated = this.authSessionStore.isAuthenticated;
 
-  protected onTechIconError(event: Event): void {
-    const target = event.target;
-
-    if (!(target instanceof HTMLImageElement)) {
-      return;
-    }
-
-    target.classList.add('stack-logo--hidden');
-
-    const fallback = target.nextElementSibling;
-    if (fallback instanceof HTMLElement) {
-      fallback.classList.add('stack-logo-fallback--visible');
-    }
+  protected toggleProjectsDropdown(): void {
+    this.isProjectsExpanded.update((value) => !value);
   }
 }
