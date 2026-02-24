@@ -32,6 +32,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "perfil",
+                "output": "profile"
               }
             ],
             "styles": [
@@ -92,6 +97,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "perfil",
+                "output": "profile"
               }
             ],
             "styles": [
