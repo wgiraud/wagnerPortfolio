@@ -1,243 +1,72 @@
 <div class="welcome-page">
+  <a class="skip" href="#main">Ir para o conteúdo</a>
   <div class="ambient-grid" aria-hidden="true"></div>
-  <div class="starfield starfield--far" aria-hidden="true"></div>
-  <div class="starfield starfield--near" aria-hidden="true"></div>
-  <div class="nebula-layer nebula-layer--one" aria-hidden="true"></div>
-  <div class="nebula-layer nebula-layer--two" aria-hidden="true"></div>
-  <div class="nebula-layer nebula-layer--three" aria-hidden="true"></div>
-  <div class="ambient-glow ambient-glow--a" aria-hidden="true"></div>
-  <div class="ambient-glow ambient-glow--b" aria-hidden="true"></div>
-
   <header class="topbar">
-    <div class="actions">
-      @if (isAuthenticated()) {
-        <a class="ghost-btn" routerLink="/dashboard">Dashboard</a>
-      } @else {
-        <a class="ghost-btn" routerLink="/login">Login</a>
-      }
+    <div class="nav-inner">
+      <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span>wgiraud<span class="accent">.</span><small>dev</small></span></a>
+      <nav aria-label="Navegação principal"><a href="#projects">Projetos</a><a href="#journey">Experiência</a><a href="#stack">Stack</a></nav>
+      <a class="nav-contact whatsapp-link" [href]="profile.whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Contato pelo WhatsApp"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> Contato <span aria-hidden="true">↗</span></a>
     </div>
   </header>
-
-  <main class="content">
-    <section class="hero-header" id="home">
-      <figure class="hero-profile" aria-label="Foto de perfil de Wagner Giraud">
-        <div class="hero-profile-frame">
-          <img
-            src="profile/perfil-640.jpg"
-            srcset="profile/perfil-320.jpg 320w, profile/perfil-640.jpg 640w"
-            sizes="(max-width: 860px) 62vw, 12rem"
-            width="640"
-            height="960"
-            alt="Foto de perfil de Wagner Giraud"
-            loading="eager"
-            fetchpriority="high"
-            decoding="async"
-          />
+  <main class="content" id="main" tabindex="-1">
+    <section id="home" class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot"></span> ENGINEERING / PORTFOLIO</p>
+        <p class="hero-name">Olá, eu sou {{ profile.name }}.</p>
+        <h1 id="hero-title">{{ content().heroTitle || 'Engenheiro de Software Full Stack' }}<span class="accent">.</span></h1>
+        <p class="hero-text">{{ content().heroDescription }}</p>
+        <div class="hero-actions"><a class="primary" href="#projects">Explorar projetos <span aria-hidden="true">↘</span></a><a class="secondary whatsapp-link" [href]="profile.whatsapp" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> WhatsApp</a></div>
+        <div class="hero-meta"><span>{{ profile.location }}</span><span>Java · Spring Boot · Angular</span></div>
+      </div>
+      <aside class="terminal" aria-label="Resumo profissional">
+        <div class="terminal-bar"><span class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>developer.profile</span><span>01</span></div>
+        <div class="terminal-body">
+          <div class="profile-row"><img src="profile/perfil-640.jpg" srcset="profile/perfil-320.jpg 320w, profile/perfil-640.jpg 640w" sizes="112px" width="640" height="960" alt="Foto de Wagner Giraud" fetchpriority="high" decoding="async"><div><span class="code-comment">// current position</span><strong>Bradesco</strong><span>Software Engineer</span></div></div>
+          <div class="code-lines"><p><span class="accent">const</span> engineer = <span aria-hidden="true">&#123;</span></p><p class="indent">since: <span class="code-value">2017</span>,</p><p class="indent">focus: <span class="code-value">'software architecture'</span>,</p><p class="indent">stack: <span class="code-value">['Java', 'Angular']</span></p><p aria-hidden="true">&#125;;</p></div>
+          <div class="terminal-status"><span class="dot"></span> building solutions <span aria-hidden="true" class="cursor">_</span></div>
         </div>
-      </figure>
-
-      <p class="hero-name">{{ profile.name }}</p>
-
-      <div class="hero-icons">
-        <a
-          class="icon-chip icon-chip-link"
-          [href]="profile.linkedin"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Abrir LinkedIn de Wagner Giraud"
-        >
-          <img
-            src="icons/linkedin.svg"
-            alt="LinkedIn"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-        <a
-          class="icon-chip icon-chip-link"
-          [href]="profile.github"
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label="Abrir GitHub de Wagner Giraud"
-        >
-          <img
-            src="icons/github.svg"
-            alt="GitHub"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-        <a
-          class="icon-chip icon-chip-link"
-          [href]="'mailto:' + profile.email"
-          aria-label="Enviar e-mail para Wagner Giraud"
-        >
-          <img
-            src="icons/email.svg"
-            alt="Email"
-            loading="lazy"
-            decoding="async"
-          />
-        </a>
-      </div>
+      </aside>
     </section>
-
-    <section class="hero">
-      @if (content().heroTitle) {
-        <h1>{{ content().heroTitle }}</h1>
+    <section class="highlights" aria-label="Diferenciais">
+      @for (highlight of highlights; track highlight.title) {
+        <article><span class="accent mono" aria-hidden="true">0{{ $index + 1 }} /</span><h2>{{ highlight.title }}</h2><p>{{ highlight.detail }}</p></article>
       }
-      <p class="hero-text">{{ content().heroDescription }}</p>
-
-      <div class="hero-meta">
-        <span>{{ profile.location }}</span>
-        <span>{{ profile.accessibility }}</span>
-      </div>
-
-      <div class="hero-pulse-grid" id="highlights">
-        @for (highlight of highlights; track highlight.title) {
-          <article class="pulse-card">
-            <h2>{{ highlight.title }}</h2>
-            <p>{{ highlight.detail }}</p>
-          </article>
-        }
-      </div>
     </section>
-
-    <section
-      class="projects-section"
-      id="projects"
-      [class.projects-section--open]="isProjectsExpanded()"
-    >
-      <header class="section-head section-head--projects">
-        <button
-          type="button"
-          class="projects-toggle"
-          [attr.aria-expanded]="isProjectsExpanded()"
-          aria-controls="projects-dropdown-body"
-          (click)="toggleProjectsDropdown()"
-        >
-          <span class="projects-toggle-main">
-            <span class="projects-toggle-title">Projetos Reais</span>
-            <span class="projects-toggle-subtitle">Titulo, descricao e link do projeto</span>
-          </span>
-          <span class="projects-toggle-icon" aria-hidden="true">▾</span>
-        </button>
-      </header>
-
-      <div
-        id="projects-dropdown-body"
-        class="projects-dropdown-body"
-        [class.projects-dropdown-body--open]="isProjectsExpanded()"
-        [attr.aria-hidden]="!isProjectsExpanded()"
-      >
-        @if (content().projects.length > 0) {
-          <div class="project-grid">
-            @for (project of content().projects; track project.name) {
-              <article class="project-card">
-                <h3>{{ project.name }}</h3>
-                @if (project.description) {
-                  <p class="project-description">{{ project.description }}</p>
-                }
-
-                @if (project.url) {
-                  <a
-                    class="project-link"
-                    [href]="project.url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    Acessar projeto
-                  </a>
-                }
-              </article>
-            }
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <header class="section-head"><p class="eyebrow">01 / BUILD</p><h2 id="projects-title">Projetos selecionados<span class="accent">.</span></h2><p>Produtos e iniciativas próprias que conectam engenharia a necessidades reais.</p></header>
+      <div class="project-grid">
+        @for (project of content().projects; track $index) {
+          <article class="project-card"><div class="project-top"><span class="mono accent">[0{{ $index + 1 }}]</span><span class="mono project-type">PROJECT</span></div><h3>{{ project.name }}</h3><p>{{ project.description }}</p>
+          <div class="project-actions">
+            @if (project.url) { <a class="project-link" [href]="project.url" target="_blank" rel="noopener noreferrer">Ver projeto ↗</a> }
+            <a class="project-link whatsapp-link" [href]="projectWhatsapp(project.name)" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Conversar no WhatsApp sobre ' + project.name"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> Saiba mais</a>
           </div>
-        } @else {
-          <p class="project-empty">Nenhum projeto publicado no momento.</p>
-        }
-      </div>
-    </section>
-
-    <section class="about" id="about">
-      <header class="section-head">
-        <p>Sobre Mim</p>
-      </header>
-
-      <div class="about-content">
-        @for (paragraph of aboutParagraphs; track paragraph) {
-          <p>{{ paragraph }}</p>
-        }
-      </div>
-    </section>
-
-    <section class="journey" id="journey">
-      <header class="section-head">
-        <p>Trajetoria Profissional</p>
-        <span>2017 - Atual</span>
-      </header>
-
-      <div class="journey-track">
-        @for (item of journey; track item.company) {
-          <article class="journey-item">
-            <p class="journey-period">{{ item.period }}</p>
-            <h3>{{ item.role }}</h3>
-            <p class="journey-company">{{ item.company }}</p>
-            <p class="journey-location">{{ item.location }}</p>
-
-            <ul>
-              @for (outcome of item.outcomes; track outcome) {
-                <li>{{ outcome }}</li>
-              }
-            </ul>
           </article>
+        } @empty { <p>Nenhum projeto publicado no momento.</p> }
+      </div>
+    </section>
+    <section id="journey" class="section" aria-labelledby="journey-title">
+      <header class="section-head"><p class="eyebrow">02 / CAREER</p><h2 id="journey-title">Trajetória profissional<span class="accent">.</span></h2><p>Experiência em produtos corporativos, serviços digitais e modernização de sistemas.</p></header>
+      <div class="timeline">
+        @for (item of journey; track item.company) {
+          <article class="job"><div class="job-time mono">{{ item.period }}</div><div><h3>{{ item.company }}</h3><p class="job-role">{{ item.role }}</p><p class="job-location">{{ item.location }}</p><ul>@for (outcome of item.outcomes; track outcome) {<li>{{ outcome }}</li>}</ul></div></article>
         }
       </div>
     </section>
-
-    <section class="cards">
-      <article class="card">
-        <h2>Habilidades</h2>
-        <ul>
-          @for (skill of content().skills; track skill) {
-            <li>{{ skill }}</li>
-          }
-        </ul>
-      </article>
-
-      <article class="card">
-        <h2>Educacao</h2>
-        <ul>
-          <li>Pos-graduacao em Engenharia de Software com Metodos Ageis.</li>
-          <li>Foco em arquitetura limpa/hexagonal e praticas SOLID.</li>
-        </ul>
-      </article>
-    </section>
-
-    <section class="stack-board" id="stack">
-      <header class="section-head">
-        <p>Stack Tecnica</p>
-        <span>Da engenharia ao deploy</span>
-      </header>
-
+    <section id="stack" class="section" aria-labelledby="stack-title">
+      <header class="section-head"><p class="eyebrow">03 / TOOLKIT</p><h2 id="stack-title">Stack técnica<span class="accent">.</span></h2><p>Tecnologias utilizadas na carreira, em projetos próprios e estudos.</p></header>
       <div class="stack-grid">
         @for (group of stackGroups; track group.title) {
-          <article class="stack-group">
-            <h3>{{ group.title }}</h3>
-            <div class="stack-chips">
-              @for (item of group.items; track item.label) {
-                <span class="stack-chip">
-                  <span class="stack-logo-wrap" aria-hidden="true">
-                    <span class="stack-logo-fallback stack-logo-fallback--visible">
-                      {{ item.monogram ?? item.label }}
-                    </span>
-                  </span>
-                  <span>{{ item.label }}</span>
-                </span>
-              }
-            </div>
-          </article>
+          <article class="stack-group"><h3>{{ group.title }}</h3><div class="chips">@for (item of group.items; track item.label) {<span><b aria-hidden="true">{{ item.monogram ?? item.label }}</b>{{ item.label }}</span>}</div></article>
         }
       </div>
+      <div class="details-grid"><article class="stack-group"><h3>Práticas de engenharia</h3><ul>@for (skill of content().skills; track $index) {<li>{{ skill }}</li>}</ul></article><article class="stack-group"><h3>Formação acadêmica</h3><ul><li>Pós-graduação em Engenharia de Software com Métodos Ágeis.</li><li>Tecnólogo em Análise e Desenvolvimento de Sistemas.</li></ul></article></div>
     </section>
+    <section id="about" class="section" aria-labelledby="about-title">
+      <header class="section-head"><p class="eyebrow">04 / ABOUT</p><h2 id="about-title">Sobre mim<span class="accent">.</span></h2></header>
+      <div class="about-panel">@for (paragraph of aboutParagraphs; track paragraph) {<p>{{ paragraph }}</p>}</div>
+    </section>
+    <section class="contact" id="contact"><div><p class="eyebrow">05 / CONNECT</p><h2>Vamos conversar<span class="accent">?</span></h2><p>Conexões profissionais e oportunidades de colaboração.</p></div><div class="contact-links"><a class="primary whatsapp-link" [href]="profile.whatsapp" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> WhatsApp <span aria-hidden="true">↗</span></a><a class="secondary" [href]="'mailto:' + profile.email">E-mail ↗</a><a class="secondary" [href]="profile.github" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="secondary" [href]="profile.linkedin" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></section>
   </main>
+  <footer><div><span>© Wagner Giraud <span class="accent">/</span> Built with Angular</span><div class="build-meta"><span class="accent" [title]="buildInfo.version">build {{ buildInfo.version }}</span><time [attr.datetime]="buildInfo.builtAt">Atualizado em {{ buildInfo.label }} (BRT)</time></div><a [routerLink]="isAuthenticated() ? '/dashboard' : '/login'">Área administrativa</a></div></footer>
 </div>
