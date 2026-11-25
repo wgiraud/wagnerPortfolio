@@ -1,0 +1,75 @@
+name: Angular 22 migration (isolated branch)
+
+on:
+  push:
+    branches: [feature/portfolio-professional-refresh]
+    paths: ['.github/workflows/angular-22-migration.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: angular-22-migration
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    if: github.ref == 'refs/heads/feature/portfolio-professional-refresh'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CI: 'true'
+      NG_CLI_ANALYTICS: 'false'
+    defaults:
+      run:
+        working-directory: wagnerGiraud
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/portfolio-professional-refresh
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.3'
+          cache: npm
+          cache-dependency-path: wagnerGiraud/package-lock.json
+      - name: Install existing locked dependencies
+        run: npm ci
+      - name: Migrate one Angular major at a time
+        shell: bash
+        run: |
+          set -euo pipefail
+          for target in 20 21 22; do
+            current=$(node -p "require('@angular/core/package.json').version.split('.')[0]")
+            if (( current < target )); then
+              npx ng update "@angular/core@$target" "@angular/cli@$target" --allow-dirty
+            fi
+          done
+          node -e "const v=require('@angular/core/package.json').version; if(!v.startsWith('22.')) throw Error('Unexpected Angular version: '+v); console.log('Angular '+v)"
+          npm pkg set 'engines.node=>=22.22.3 <23'
+          npm install --package-lock-only
+          npm ci
+      - name: Test
+        shell: bash
+        run: |
+          if node -e "const a=require('./angular.json'); process.exit(Object.values(a.projects).some(p => p.architect?.test?.builder?.endsWith(':karma')) ? 0 : 1)"; then
+            npm test -- --watch=false --browsers=ChromeHeadless
+          else
+            npm test -- --watch=false
+          fi
+      - name: Production build
+        run: npm run build -- --configuration=production
+      - name: Commit validated migration to feature branch only
+        working-directory: .
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add wagnerGiraud
+          if git diff --cached --quiet; then
+            echo "No migration changes"
+            exit 0
+          fi
+          git commit -m "chore: migrate Angular 19 to 22 and regenerate lockfile"
+          git push origin HEAD:refs/heads/feature/portfolio-professional-refresh

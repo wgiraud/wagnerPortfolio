@@ -1,59 +1,29 @@
-# WagnerGiraud
+# Wagner Giraud — Portfólio
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.21.
+Aplicação Angular 22, TypeScript 6, Node.js 22.22.3 ou superior da série 22.
 
-## Development server
-
-To start a local development server, run:
+## Desenvolvimento
 
 ```bash
-ng serve
+npm ci
+npm start
+npm test -- --watch=false --browsers=ChromeHeadless
+npm run build
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Identificação automática de builds
 
-## Code scaffolding
+O script `scripts/generate-build-info.mjs` gera o arquivo TypeScript `src/app/core/generated/build-info.ts` durante a instalação e antes dos comandos de build, desenvolvimento e testes. O arquivo gerado é ignorado pelo Git.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+O identificador combina o instante UTC (ano, mês, dia, hora, minuto, segundo e milissegundo) com o SHA curto do commit. A data visível é formatada no horário de São Paulo. O commit é obtido de `VERCEL_GIT_COMMIT_SHA`, `GITHUB_SHA` ou do Git local, nessa ordem.
 
-```bash
-ng generate component component-name
-```
+No Vercel, `vercel.json` usa `npm run build`, então cada novo build regenera os dados automaticamente. Não é necessário alterar o package.json a cada deploy nem realizar commits automáticos. Um rollback retorna os metadados do build restaurado; promover um build existente não altera a data de compilação.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Deploy
 
-```bash
-ng generate --help
-```
+1. Abra uma branch feature e faça as alterações.
+2. Abra PR para develop e valide o Angular CI.
+3. Abra PR de develop para main e valide o CI antes do merge.
+4. O Vercel publica automaticamente a main quando o deploy está autorizado.
 
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+O rodapé mostra a identificação do build e o horário da última compilação.
