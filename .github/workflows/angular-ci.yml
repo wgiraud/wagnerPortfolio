@@ -35,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22.22.3'
           cache: npm
           cache-dependency-path: wagnerGiraud/package-lock.json
 
@@ -61,7 +61,11 @@ jobs:
           fi
 
           if echo "$TEST_SCRIPT" | grep -q "ng test"; then
-            npm run test -- --watch=false --browsers=ChromeHeadless
+            if node -e "const a=require('./angular.json'); process.exit(Object.values(a.projects).some(p => p.architect?.test?.builder?.endsWith(':karma')) ? 0 : 1)"; then
+              npm run test -- --watch=false --browsers=ChromeHeadless
+            else
+              npm run test -- --watch=false
+            fi
           else
             npm run test
           fi
