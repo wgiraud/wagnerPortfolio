@@ -9,28 +9,18 @@ const REMOVED_HERO_TITLES = new Set<string>([
 ]);
 
 const DEFAULT_PORTFOLIO_CONTENT: PortfolioContent = {
-  heroTitle: '',
-  heroDescription:
-    'Engenheiro full stack com foco em Java, Angular e .NET para produtos corporativos de alta relevancia, com arquitetura limpa, SOLID e entrega continua.',
+  heroTitle: 'Engenheiro de Software Full Stack',
+  heroDescription: 'Desenvolvo aplicações corporativas e produtos digitais com Java, Spring Boot e Angular, conectando arquitetura, qualidade e entrega contínua.',
   projects: [
-    {
-      name: 'Portfolio oficial em Angular',
-      description: 'Aplicacao portfolio responsiva com dashboard de edicao e deploy continuo.',
-      url: 'https://github.com/wgiraud/wagnerPortfolio',
-    },
-    {
-      name: 'Aplicacao full stack com Java 21 + Angular',
-      description: 'Arquitetura orientada a microsservicos com foco em performance e resiliencia.',
-    },
-    {
-      name: 'Projeto .NET + Angular para ambiente corporativo',
-      description: 'Fluxos corporativos com integracoes, testes automatizados e entrega continua.',
-    },
+    { name: '316Maker', description: 'Sistema de gestão para impressão 3D, com controle de custos, materiais e operações de produção. Java, Angular e PostgreSQL.' },
+    { name: 'Planning Poker', description: 'Aplicação para estimativas ágeis em squads, com gestão de sessões, membros e papéis. Angular e Java.' },
+    { name: '316 Nota Fiscal', description: 'Projeto de API para integração modular de serviços fiscais brasileiros.' },
+    { name: 'Portfólio profissional', description: 'Aplicação Angular com arquitetura em camadas, interface responsiva e integração contínua.', url: 'https://github.com/wgiraud/wagnerPortfolio' },
   ],
   skills: [
-    'Microsservicos, Micro Frontends e design patterns.',
-    'Testes automatizados com Jest e Cypress.',
-    'CI/CD com GitHub Actions e observabilidade com Datadog.',
+    'Arquitetura limpa e hexagonal, SOLID e microsserviços.',
+    'APIs REST, persistência de dados e integrações.',
+    'Testes automatizados, CI/CD e observabilidade.',
   ],
   languages: ['Java', 'TypeScript', 'C#'],
 };
@@ -56,12 +46,9 @@ export class PortfolioContentStore {
       return DEFAULT_PORTFOLIO_CONTENT;
     }
 
-    const raw = window.localStorage.getItem(this.storageKey);
-    if (!raw) {
-      return DEFAULT_PORTFOLIO_CONTENT;
-    }
-
     try {
+      const raw = window.localStorage.getItem(this.storageKey);
+      if (!raw) return DEFAULT_PORTFOLIO_CONTENT;
       const parsed = JSON.parse(raw) as Partial<PortfolioContent>;
       return {
         heroTitle: this.sanitizeHeroTitle(

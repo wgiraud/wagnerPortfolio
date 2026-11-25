@@ -38,85 +38,85 @@ type StackGroup = {
 export class WelcomeComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);
   private readonly authSessionStore = inject(AuthSessionStore);
-  protected readonly isProjectsExpanded = signal(false);
+  protected readonly isProjectsExpanded = signal(true);
 
   protected readonly profile = {
     name: 'Wagner Giraud',
     email: 'wagner_giraud@outlook.com',
     linkedin: 'https://www.linkedin.com/in/wagner-giraud-pcd-a743b6196/',
     github: 'https://github.com/wgiraud',
-    location: 'Sao Paulo - SP',
-    accessibility: 'PCD | Deficiencia Auditiva Bilateral',
+    location: 'São Paulo, Brasil',
+    accessibility: 'PCD | Deficiência auditiva bilateral',
   };
 
   protected readonly aboutParagraphs = [
-    'Engenheiro de Software Full Stack com experiencia em modernizacao de sistemas legados e evolucao de plataformas escalaveis.',
-    'Atuacao com Java (Spring Boot), Angular e .NET em projetos estrategicos para empresas de grande porte.',
-    'Foco em arquitetura limpa/hexagonal, principios SOLID, CI/CD, testes automatizados e entrega continua orientada a impacto de negocio.',
+    'Engenheiro de Software com trajetória em tecnologia desde 2017, atuando na modernização de sistemas e na evolução de produtos digitais.',
+    'Experiência com Java, Spring Boot, Angular e .NET em ambientes corporativos, incluindo o setor financeiro.',
+    'Foco em arquitetura limpa e hexagonal, SOLID, integração contínua, testes automatizados e soluções que atendam necessidades reais de negócio.',
   ];
 
   protected readonly journey: JourneyItem[] = [
     {
       role: 'Engenheiro de Software Full Stack',
       company: 'Bradesco',
-      period: '2025 - Atual',
-      location: 'Sao Paulo/SP',
+      period: 'Dez 2025 — Atual',
+      location: 'São Paulo/SP',
       outcomes: [
-        'Atuacao em evolucao de produtos digitais com foco em escalabilidade e resiliencia.',
-        'Construcao de solucoes full stack com boas praticas de arquitetura e qualidade.',
-        'Colaboracao com times multidisciplinares em fluxo agil e entrega continua.',
+        'Atuação em evolução de produtos digitais com foco em escalabilidade e resiliência.',
+        'Construção de soluções full stack com boas praticas de arquitetura e qualidade.',
+        'Colaboração com times multidisciplinares em fluxo ágil e entrega contínua.',
       ],
     },
     {
       role: 'Engenheiro de Software',
       company: 'Itau Unibanco',
       period: '2024 - 2025',
-      location: 'Sao Paulo/SP | Hibrido',
+      location: 'São Paulo/SP | Híbrido',
       outcomes: [
-        'Modernizacao de sistemas legados com Java 21 (Spring Boot) e Angular.',
-        'Desenvolvimento de microsservicos e arquitetura de Micro Frontends.',
-        'Integracao com CMS Headless, testes com Jest/Cypress e CI/CD com GitHub Actions.',
+        'Modernização de sistemas legados com Java 21 (Spring Boot) e Angular.',
+        'Desenvolvimento de microsserviços e arquitetura de Micro Frontends.',
+        'Integração com CMS Headless, testes com Jest/Cypress e CI/CD com GitHub Actions.',
       ],
     },
     {
       role: 'Desenvolvedor Full Stack',
       company: 'EY (Ernst & Young)',
       period: '2022 - 2024',
-      location: 'Sao Paulo/SP | Remoto',
+      location: 'São Paulo/SP | Remoto',
       outcomes: [
-        'Atuacao em transformacao digital para multinacional de energia.',
-        'Evolucao de solucoes em .NET Framework, NHibernate e Angular.',
-        'Otimizacao de queries, integracoes corporativas e melhorias de usabilidade/performance.',
+        'Atuação em transformação digital para multinacional de energia.',
+        'Evolucao de soluções em .NET Framework, NHibernate e Angular.',
+        'Otimização de queries, integrações corporativas e melhorias de usabilidade/performance.',
       ],
     },
     {
       role: 'Desenvolvedor Full Stack',
       company: 'HJJB Tecnologia',
       period: '2017 - 2022',
-      location: 'Sao Paulo/SP | Remoto',
+      location: 'São Paulo/SP | Remoto',
       outcomes: [
         'Desenvolvimento de sistemas web com Angular, .NET 4, ASP.NET MVC e SQL Server.',
-        'Entrega continua com Git e Jenkins em fluxo Scrum.',
-        'Contribuicao em projetos full stack para diferentes contextos de negocio.',
+        'Entrega contínua com Git e Jenkins em fluxo Scrum.',
+        'Contribuicao em projetos full stack para diferentes contextos de negócio.',
       ],
     },
   ];
 
   protected readonly highlights: HighlightItem[] = [
     {
-      title: 'Modernizacao Estrategica',
+      title: 'Modernização de sistemas',
       detail:
-        'Legados evoluidos para arquiteturas escalaveis com menor risco de operacao.',
+        'Evolução de sistemas legados com foco em arquitetura e manutenção.',
     },
     {
-      title: 'Engenharia de Qualidade',
+      title: 'Qualidade de engenharia',
       detail:
-        'Aplicacao consistente de SOLID, testes automatizados e pipelines robustos.',
+        'SOLID, testes automatizados e integração contínua.',
     },
     {
-      title: 'Entrega de Valor',
+      title: 'Entrega de valor',
       detail:
-        'Foco em performance, observabilidade e experiencia real de produto.',
+        'Performance, observabilidade e experiência de produto.',
     },
   ];
 
@@ -124,7 +124,7 @@ export class WelcomeComponent {
     {
       title: 'Linguagens',
       items: [
-        { label: 'Java', iconSlug: 'openjdk', monogram: 'JV' },
+        { label: 'Java 21', iconSlug: 'openjdk', monogram: 'JV' },
         { label: 'TypeScript', iconSlug: 'typescript', monogram: 'TS' },
         { label: 'C#', iconSlug: 'csharp', monogram: 'C#' },
       ],
@@ -146,6 +146,10 @@ export class WelcomeComponent {
         { label: 'Scrum', monogram: 'SC' },
         { label: 'SonarQube', iconSlug: 'sonarqube', monogram: 'SQ' },
         { label: 'Datadog', iconSlug: 'datadog', monogram: 'DD' },
+        { label: 'Docker', monogram: 'DK' },
+        { label: 'Azure', monogram: 'AZ' },
+        { label: 'Dynatrace', monogram: 'DT' },
+        { label: 'Playwright', monogram: 'PW' },
         { label: 'Jest', iconSlug: 'jest', monogram: 'JT' },
         { label: 'Cypress', iconSlug: 'cypress', monogram: 'CY' },
       ],
@@ -157,6 +161,7 @@ export class WelcomeComponent {
         { label: 'SQL Server', iconSlug: 'microsoftsqlserver', monogram: 'MS' },
         { label: 'MongoDB', iconSlug: 'mongodb', monogram: 'MG' },
         { label: 'Redis', iconSlug: 'redis', monogram: 'RD' },
+        { label: 'Kafka', monogram: 'KF' },
       ],
     },
   ];
