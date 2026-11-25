@@ -45,6 +45,7 @@ export class WelcomeComponent {
     email: 'wagner_giraud@outlook.com',
     linkedin: 'https://www.linkedin.com/in/wagner-giraud-pcd-a743b6196/',
     github: 'https://github.com/wgiraud',
+    whatsapp: 'https://wa.me/5513996001094',
     location: 'São Paulo, Brasil',
     accessibility: 'PCD | Deficiência auditiva bilateral',
   };
@@ -171,5 +172,10 @@ export class WelcomeComponent {
 
   protected toggleProjectsDropdown(): void {
     this.isProjectsExpanded.update((value) => !value);
+  }
+
+  protected projectWhatsapp(projectName: string): string {
+    const message = `Olá, Wagner! Vi seu portfólio e gostaria de saber mais sobre o projeto ${projectName}.`;
+    return `${this.profile.whatsapp}?text=${encodeURIComponent(message)}`;
   }
 }

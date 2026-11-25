@@ -5,7 +5,7 @@
     <div class="nav-inner">
       <a class="brand" href="#home"><span class="brand-mark" aria-hidden="true">&lt;/&gt;</span><span>wgiraud<span class="accent">.</span><small>dev</small></span></a>
       <nav aria-label="Navegação principal"><a href="#projects">Projetos</a><a href="#journey">Experiência</a><a href="#stack">Stack</a></nav>
-      <a class="nav-contact" href="#contact">Contato <span aria-hidden="true">↗</span></a>
+      <a class="nav-contact whatsapp-link" [href]="profile.whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Contato pelo WhatsApp"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> Contato <span aria-hidden="true">↗</span></a>
     </div>
   </header>
   <main class="content" id="main" tabindex="-1">
@@ -15,7 +15,7 @@
         <p class="hero-name">Olá, eu sou {{ profile.name }}.</p>
         <h1 id="hero-title">{{ content().heroTitle || 'Engenheiro de Software Full Stack' }}<span class="accent">.</span></h1>
         <p class="hero-text">{{ content().heroDescription }}</p>
-        <div class="hero-actions"><a class="primary" href="#projects">Explorar projetos <span aria-hidden="true">↘</span></a><a class="secondary" [href]="profile.linkedin" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></div>
+        <div class="hero-actions"><a class="primary" href="#projects">Explorar projetos <span aria-hidden="true">↘</span></a><a class="secondary whatsapp-link" [href]="profile.whatsapp" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> WhatsApp</a></div>
         <div class="hero-meta"><span>{{ profile.location }}</span><span>Java · Spring Boot · Angular</span></div>
       </div>
       <aside class="terminal" aria-label="Resumo profissional">
@@ -37,7 +37,10 @@
       <div class="project-grid">
         @for (project of content().projects; track $index) {
           <article class="project-card"><div class="project-top"><span class="mono accent">[0{{ $index + 1 }}]</span><span class="mono project-type">PROJECT</span></div><h3>{{ project.name }}</h3><p>{{ project.description }}</p>
-          @if (project.url) { <a class="project-link" [href]="project.url" target="_blank" rel="noopener noreferrer">Ver projeto ↗</a> }
+          <div class="project-actions">
+            @if (project.url) { <a class="project-link" [href]="project.url" target="_blank" rel="noopener noreferrer">Ver projeto ↗</a> }
+            <a class="project-link whatsapp-link" [href]="projectWhatsapp(project.name)" target="_blank" rel="noopener noreferrer" [attr.aria-label]="'Conversar no WhatsApp sobre ' + project.name"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> Saiba mais</a>
+          </div>
           </article>
         } @empty { <p>Nenhum projeto publicado no momento.</p> }
       </div>
@@ -63,7 +66,7 @@
       <header class="section-head"><p class="eyebrow">04 / ABOUT</p><h2 id="about-title">Sobre mim<span class="accent">.</span></h2></header>
       <div class="about-panel">@for (paragraph of aboutParagraphs; track paragraph) {<p>{{ paragraph }}</p>}</div>
     </section>
-    <section class="contact" id="contact"><div><p class="eyebrow">05 / CONNECT</p><h2>Vamos conversar<span class="accent">?</span></h2><p>Conexões profissionais e oportunidades de colaboração.</p></div><div class="contact-links"><a class="primary" [href]="'mailto:' + profile.email">E-mail ↗</a><a class="secondary" [href]="profile.github" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="secondary" [href]="profile.linkedin" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></section>
+    <section class="contact" id="contact"><div><p class="eyebrow">05 / CONNECT</p><h2>Vamos conversar<span class="accent">?</span></h2><p>Conexões profissionais e oportunidades de colaboração.</p></div><div class="contact-links"><a class="primary whatsapp-link" [href]="profile.whatsapp" target="_blank" rel="noopener noreferrer"><svg class="whatsapp-icon" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.6 7.4L3 20l1.2-4.8A8.5 8.5 0 1 1 20.5 11.5Z"/><path d="M8.2 7.8c.4 2.9 2.3 4.8 5.3 6.2l1.4-1.2 2 1.1c-.2 1.4-1.1 2.2-2.7 2-4.4-.7-7.5-3.7-8-7.8-.1-.9.5-1.7 1.3-1.8l1.3 2.2"/></svg> WhatsApp <span aria-hidden="true">↗</span></a><a class="secondary" [href]="'mailto:' + profile.email">E-mail ↗</a><a class="secondary" [href]="profile.github" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="secondary" [href]="profile.linkedin" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a></div></section>
   </main>
   <footer><div><span>© Wagner Giraud <span class="accent">/</span> Built with Angular</span><a [routerLink]="isAuthenticated() ? '/dashboard' : '/login'">Área administrativa</a></div></footer>
 </div>
