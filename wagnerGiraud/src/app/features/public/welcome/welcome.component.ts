@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { BUILD_INFO } from '../../../core/generated/build-info';
 import { AuthSessionStore } from '../../../core/application/state/auth-session.store';
 import { PortfolioContentStore } from '../../../core/application/state/portfolio-content.store';
 
@@ -39,6 +40,8 @@ export class WelcomeComponent {
   private readonly portfolioContentStore = inject(PortfolioContentStore);
   private readonly authSessionStore = inject(AuthSessionStore);
   protected readonly isProjectsExpanded = signal(true);
+
+  protected readonly buildInfo = BUILD_INFO;
 
   protected readonly profile = {
     name: 'Wagner Giraud',
